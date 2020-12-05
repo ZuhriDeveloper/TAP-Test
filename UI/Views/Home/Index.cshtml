@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <div class="input-group mb-3">
+
+        <input type="text" id="txtInput" class="form-control" placeholder="Nomor Kartu">
+        <div class="input-group-append">
+            <span class="input-group-text"><label id="lblAlias"></label></span>
+        </div>
+        <div class="input-group-append">
+            <span class="input-group-text"><label id="lblType"></label></span>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var baseurl = '@Context.Request.Scheme' + "://" + '@Context.Request.Host';
+
+            $("#txtInput").keyup(function () {
+                var cardNumber = $("#txtInput").val();
+                console.log(cardNumber);
+                if (cardNumber.length > 5) {
+                    var url = baseurl + "/api/HomeApi/" + cardNumber;
+                    console.log(url);
+                    $.getJSON(url, null, function (data) {
+                        $("#lblAlias").val(data["BankAlias"]);
+                        $("#lblType").val(data["CardType"]);
+                    });
+                }
+            });
+        });
+    </script>
+}
